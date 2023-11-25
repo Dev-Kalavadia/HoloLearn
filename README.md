@@ -1,2 +1,0 @@
-# HoloLearn
- Capstone Repo
