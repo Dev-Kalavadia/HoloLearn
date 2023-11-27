@@ -1,7 +1,31 @@
-export const metadata = {
-  title: 'Sign In - HoloLearn',
-  description: 'Page description',
-}
+import 'firebase/auth';
+import 'firebase/functions';
+import { initializeApp } from 'firebase/app';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import dynamic from 'next/dynamic';
+// # import from the components/auth.tsx file
+
+// const app = initializeApp(firebaseConfig);
+
+// export const auth = getAuth();
+// export const functions = getFunctions();
+
+// const provider = new GoogleAuthProvider();
+
+// export const metadata = {
+//   title: 'Sign In - HoloLearn',
+//   description: 'Page description',
+// }
+
+// const signInWithGoogle = async () => {
+//   const result = await signInWithPopup(auth, provider);
+//   const user = result.user;
+//   const token = await user.getIdToken();
+//   const addMessage = httpsCallable(functions, 'addMessage');
+//   const response = await addMessage({ text: token });
+//   console.log(response.data);
+// }
 
 import Link from 'next/link'
 
