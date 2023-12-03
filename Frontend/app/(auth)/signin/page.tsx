@@ -1,40 +1,75 @@
-import 'firebase/auth';
-import 'firebase/functions';
-import { initializeApp } from 'firebase/app';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import dynamic from 'next/dynamic';
-// # import from the components/auth.tsx file
-
-// const app = initializeApp(firebaseConfig);
-
-// export const auth = getAuth();
-// export const functions = getFunctions();
-
-// const provider = new GoogleAuthProvider();
-
-// export const metadata = {
-//   title: 'Sign In - HoloLearn',
-//   description: 'Page description',
-// }
-
-// const signInWithGoogle = async () => {
-//   const result = await signInWithPopup(auth, provider);
-//   const user = result.user;
-//   const token = await user.getIdToken();
-//   const addMessage = httpsCallable(functions, 'addMessage');
-//   const response = await addMessage({ text: token });
-//   console.log(response.data);
-// }
-
+'use client'
 import Link from 'next/link'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert, { AlertColor } from '@mui/material/Alert';
+import { useAuth } from '../AuthContext';
 
 export default function SignIn() {
+
+  useEffect(() => {
+    document.title = 'Sign In - HoloLearn'; // Set the title dynamically
+  }, []);
+
+  const { setUser, setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
+
+  // State hooks for form data
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
+
+  // Function to handle form submission
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:4000/signin', {
+        email: email,
+        password: password,
+      });
+
+      console.log(response.data);
+
+      setUser(response.data.user);
+
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      setIsAuthenticated(true); // Set authentication to true
+
+      setSnackbar({ open: true, message: 'User signed in successfully', severity: 'success' });
+      localStorage.setItem('token', response.data.token);
+
+      window.location.href = '/dashboard';
+       
+
+    } catch (error) {
+
+      if (axios.isAxiosError(error)) {
+        switch ((error.response as { status: number }).status) {
+          case 401:
+            setSnackbar({ open: true, message: 'Invalid user. Please try again.', severity: 'error' });
+            break;
+          case 402:
+            setSnackbar({ open: true, message: 'Invalid password. Please try again.', severity: 'error' });
+            break;
+          default:
+            setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+            break;
+        }
+      } else {
+        setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+      }
+    }
+  };
+
+  // Function to close the Snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   return (
     <section className="relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-
           {/* Page header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
             <h1 className="h1">Welcome back. We exist to make learning easier.</h1>
@@ -50,8 +85,12 @@ export default function SignIn() {
                       <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
                     </svg>
                     <span className="h-6 flex items-center border-r border-white border-opacity-25 mr-4" aria-hidden="true"></span>
-                    <span className="flex-auto pl-16 pr-8 -ml-16">Sign in with Google</span>
+                    <span className="flex-auto pl-16 pr-8 -ml-16"
+                    >Sign in with Google</span>
                   </button>
+
+                  {/* <GoogleSignInButton /> */}
+
                 </div>
               </div>
             </form>
@@ -60,17 +99,30 @@ export default function SignIn() {
               <div className="text-gray-400">Or, sign in with your email</div>
               <div className="border-t border-gray-700 border-dotted grow ml-3" aria-hidden="true"></div>
             </div>
-            <form>
+
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="email">Email</label>
-                  <input id="email" type="email" className="form-input w-full text-gray-300" placeholder="you@yourcompany.com" required />
+                  <input id="email"
+                    type="email"
+                    className="form-input w-full text-gray-300"
+                    placeholder="you@yourdomain.com"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    required />
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="password">Password</label>
-                  <input id="password" type="password" className="form-input w-full text-gray-300" placeholder="Password (at least 10 characters)" required />
+                  <input id="password"
+                    type="password"
+                    className="form-input w-full text-gray-300"
+                    placeholder="Password (at least 10 characters)"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required />
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-4">
@@ -97,6 +149,16 @@ export default function SignIn() {
 
         </div>
       </div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity as AlertColor} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </section>
   )
 }

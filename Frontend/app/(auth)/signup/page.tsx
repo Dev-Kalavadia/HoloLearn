@@ -1,11 +1,72 @@
-export const metadata = {
-  title: 'Sign Up - HoloLearn',
-  description: 'Page description',
-}
-
+'use client'
 import Link from 'next/link'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'; // You'll need to install axios with `npm install axios` or `yarn add axios`
+import Snackbar from '@mui/material/Snackbar';
+import Alert, { AlertColor } from '@mui/material/Alert';
+import Head from 'next/head';
+import { useAuth } from '../AuthContext';
+
+
 
 export default function SignUp() {
+  useEffect(() => {
+    document.title = 'Sign Up - HoloLearn'; // Set the title dynamically
+  }, []);
+
+  // State hooks to store form field values
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
+  const { setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
+
+
+  // Function to handle form submission
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault(); // Prevent the default form submission
+    // Your code here
+    try {
+      // Send a POST request to the backend signup endpoint
+      const response = await axios.post('http://localhost:4000/signup', {
+        firstname: firstName,
+        lastname: lastName,
+        email: email,
+        password: password,
+      });
+
+      // Handle success (e.g., navigate to a different page, show a success message, etc.)
+      console.log('User signed up:', response.data);
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      setIsAuthenticated(true); // Set authentication to true
+      // success message to the user on the snackbar
+      setSnackbar({ open: true, message: 'User signed up successfully', severity: 'success' });
+
+      window.location.href = '/signin';
+
+      // ...
+
+    } catch (error) {
+      // Handle error (e.g., show error message to the user)
+      // if response status code is 400, it means the user already exists show card 
+      // with message that user already exists
+      setSnackbar({ open: true, message: 'User already exists', severity: 'error' });
+
+
+      if (axios.isAxiosError(error)) {
+        console.error('Signup failed:', error.response?.data?.error);
+      }
+    }
+  };
+
+  // Function to close the Snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+
   return (
     <section className="relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -18,7 +79,7 @@ export default function SignUp() {
 
           {/* Form */}
           <div className="max-w-sm mx-auto">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-wrap -mx-3">
                 <div className="w-full px-3">
                   <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center">
@@ -36,32 +97,60 @@ export default function SignUp() {
               <div className="text-gray-400">Or, register with your email</div>
               <div className="border-t border-gray-700 border-dotted grow ml-3" aria-hidden="true"></div>
             </div>
-            <form>
-              <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
-                  <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="full-name">Full Name <span className="text-red-600">*</span></label>
-                  <input id="full-name" type="text" className="form-input w-full text-gray-300" placeholder="First and last name" required />
+
+            {/* Form */}
+
+            <form onSubmit={handleSubmit}>
+              <div className="flex flex-wrap -mx-3">
+                <div className="w-full px-3 py-2">
+                  <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="full-name">First Name <span className="text-red-600">*</span></label>
+                  <input id="full-name"
+                    type="text"
+                    className="form-input w-full text-gray-300"
+                    placeholder="First name"
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
+                    required />
                 </div>
               </div>
-              <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
-                  <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="company-name">Company Name <span className="text-red-600">*</span></label>
-                  <input id="company-name" type="text" className="form-input w-full text-gray-300" placeholder="Your company or app name" required />
+              <div className="flex flex-wrap -mx-3">
+                <div className="w-full px-3 py-2">
+                  <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="company-name">Last Name <span className="text-red-600">*</span></label>
+                  <input id="company-name"
+                    type="text"
+                    className="form-input w-full text-gray-300"
+                    placeholder="Last name"
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
+                    required />
                 </div>
               </div>
-              <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
-                  <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="email">Work Email <span className="text-red-600">*</span></label>
-                  <input id="email" type="email" className="form-input w-full text-gray-300" placeholder="you@yourcompany.com" required />
+              <div className="flex flex-wrap -mx-3">
+                <div className="w-full px-3 py-2">
+                  <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="email">Email Address<span className="text-red-600">*</span></label>
+                  <input id="email"
+                    type="email"
+                    className="form-input w-full text-gray-300"
+                    placeholder="Your Email address"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    required />
+
                 </div>
               </div>
-              <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
+              <div className="flex flex-wrap -mx-3">
+                <div className="w-full px-3 py-2">
                   <label className="block text-gray-300 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
-                  <input id="password" type="password" className="form-input w-full text-gray-300" placeholder="Password (at least 10 characters)" required />
+                  <input id="password"
+                    type="password"
+                    className="form-input w-full text-gray-300"
+                    placeholder="Password (at least 10 characters)"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required />
                 </div>
               </div>
-              <div className="text-sm text-gray-500 text-center">
+              <div className="text-sm text-gray-500 text-center py-1">
                 I agree to be contacted by HoloLearn about this offer as per the HoloLearn <Link href="#" className="underline text-gray-400 hover:text-gray-200 hover:no-underline transition duration-150 ease-in-out">Privacy Policy</Link>.
               </div>
               <div className="flex flex-wrap -mx-3 mt-6">
@@ -77,6 +166,17 @@ export default function SignUp() {
 
         </div>
       </div>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity as AlertColor} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </section>
   )
 }

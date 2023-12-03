@@ -1,0 +1,82 @@
+/* manageAsset.module.css */
+.tableContainer {
+    border-radius: 8px;
+    overflow: hidden;
+    color: #FFFFFF;
+}
+
+.tableHead {
+    background-color: #95a3ee;
+    color: #FFFFFF;
+    /* White background for the table header */
+    font-weight: 700;
+}
+
+/* table row text color to #Oc0134 */
+.tableRow {
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #474747;
+    color: #0c0134;
+
+    /* Border color for separation */
+}
+
+.tableRow:nth-of-type(odd) {
+    background-color: #f9f9f9;
+    /* Light grey for zebra striping */
+}
+
+.tableRow:hover {
+    background-color: #ececec;
+    /* Even lighter grey on hover */
+}
+
+.tableCell,
+.tableCellHead {
+    padding: 16px 24px;
+
+    /* Adjust padding for cleaner look */
+    border-bottom: none;
+    /* Remove the default border */
+}
+
+.tableCellHead {
+    font-weight: 600 !important;
+    color: #0c0134 !important;
+}
+
+
+.iconButtonDownload {
+    color: #0c0134;
+    /* Lighter grey for icons for better contrast */
+}
+
+.iconButtonDownload:hover {
+    color: #0c0134;
+    /* White on hover for icons */
+}
+
+.iconButtonDelete {
+    color: rgb(255, 38, 0);
+    /* Lighter grey for icons for better contrast */
+}
+
+.iconButtonDelete:hover {
+    color: #ff1d1d;
+    /* White on hover for icons */
+}
+
+.customPaper {
+    background-color: transparent;
+    /* To match the dark theme */
+    box-shadow: none;
+    /* Remove the box shadow for a flatter design */
+}
+
+.tableActions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+    /* Space out icons a bit */
+}

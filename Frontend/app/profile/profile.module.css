@@ -1,0 +1,55 @@
+/* profile.module.css */
+.profileContainer {
+    color: #FFFFFF;
+    background-color: #1E1E1E;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    height: 100%;
+    width: 100%;
+    margin: 30px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 100px;
+}
+
+.profileTitle {
+    color: #657aeb;
+    font-weight: 450;
+    /* inter font defined in layout file */
+    font-family: 'Inter', sans-serif;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profileDetail {
+    margin: 10px 0;
+    font-size: 1.em;
+}
+
+.logoutButton {
+    background-color: #FF5252;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    /*  MOVE IT TO THE RIGHT SIDE */
+    float: right;
+    transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+    background-color: #FF1744;
+}
+
+.profileSubtitle {
+    color: #657aeb;
+    font-weight: 450;
+    /* inter font defined in layout file */
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 20px;
+}
