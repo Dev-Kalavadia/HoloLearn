@@ -4,29 +4,6 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { httpsCallable , Functions} from "firebase/functions";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyD5GpB1JnXj6hq7lyZAFjG00c_Yeo72n0I",
-    authDomain: "hololearn-capstone.firebaseapp.com",
-    databaseURL: "https://hololearn-capstone-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "hololearn-capstone",
-    storageBucket: "hololearn-capstone.appspot.com",
-    messagingSenderId: "296068361049",
-    appId: "1:296068361049:web:6c7496caa7d51883bc7a48",
-    measurementId: "G-RG12GWBYQB"
-  };
-
-const app = initializeApp(firebaseConfig);
-const provider = new GoogleAuthProvider();
-
-const signInWithGoogle = async () => {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const token = await user.getIdToken();
-    const addMessage = httpsCallable(functions, 'addMessage');
-    const response = await addMessage({ text: token });
-    console.log(response.data);
-}
-
 export default function SignIn() {
     return (
         <section className="relative">
