@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Modal, Box, TextField, Button } from '@mui/material';
 import { useAuth } from '@/app/(auth)/AuthContext';
 
-import styles from './UploadAssetModal.module.css';
+import styles from './uploadAssetModal.module.css';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 

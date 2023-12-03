@@ -1,11 +1,11 @@
 /*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./components/UploadAssetModal.module.css ***!
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./components/uploadAssetModal.module.css ***!
   \**********************************************************************************************************************************************************************************************************************************************************************************/
 /* UploadAssetModal.module.css */
-.UploadAssetModal_modalTitle__e7RJU {
+.uploadAssetModal_modalTitle__JyCNH {
   font-weight: 600;
 }
-.UploadAssetModal_modalBox__l8J7h {
+.uploadAssetModal_modalBox__rgEnH {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -21,7 +21,7 @@
   text-align: center;
   outline: none;
 }
-.UploadAssetModal_fileInputContainer__y_hu9 {
+.uploadAssetModal_fileInputContainer__1B72f {
   border: 2px dashed #5d5dff;
   border-radius: 12px;
   padding: 32px;
@@ -41,12 +41,12 @@
   position: relative;
   /* To position the file name display */
 }
-.UploadAssetModal_fileInputContainer__y_hu9:hover {
+.uploadAssetModal_fileInputContainer__1B72f:hover {
   border-color: #4c4cf8;
   /* Lighter blue on hover */
 }
 /* Hidden file input styled through label */
-.UploadAssetModal_customFileInput__XShDP {
+.uploadAssetModal_customFileInput__glVWx {
   display: none;
   opacity: 0;
   /* Keep it hidden */
@@ -55,7 +55,7 @@
   /* Place it behind the label */
 }
 /* Style for the Choose File button */
-.UploadAssetModal_customFileBtn__LtGB9 {
+.uploadAssetModal_customFileBtn__qaeMY {
   background: #5d5dff;
   color: #fff;
   border: none;
@@ -76,12 +76,12 @@
   margin: 0;
   /* Center button */
 }
-.UploadAssetModal_customFileBtn__LtGB9:hover {
+.uploadAssetModal_customFileBtn__qaeMY:hover {
   background: #4c4cf8;
 
 }
 /* Style for the file name display */
-.UploadAssetModal_fileNameDisplay__8XV7a {
+.uploadAssetModal_fileNameDisplay__DDKT8 {
   display: block;
   /* New line for filename */
   margin-top: 20px;
@@ -92,7 +92,7 @@
   /* Regular font weight for filename */
 }
 /* Style the label to look like a clickable box */
-.UploadAssetModal_fileInputLabel__9zOiQ {
+.uploadAssetModal_fileInputLabel__5vsUc {
   display: inline-block;
   /* Allow width and margin */
   padding: 12px 24px;
@@ -103,10 +103,10 @@
   cursor: pointer;
   transition: background-color 0.3s;
 }
-.UploadAssetModal_fileInputLabel__9zOiQ:hover {
+.uploadAssetModal_fileInputLabel__5vsUc:hover {
   background: #4c4cf8;
 }
-.UploadAssetModal_uploadAssetButton__anlqT {
+.uploadAssetModal_uploadAssetButton__cwRvf {
   background: #5d5dff;
   color: white;
   border: none;
@@ -125,17 +125,17 @@
   box-sizing: border-box;
   /* Include padding and border in width */
 }
-.UploadAssetModal_uploadAssetButton__anlqT:hover {
+.uploadAssetModal_uploadAssetButton__cwRvf:hover {
   background: #4c4cf8;
 }
-.UploadAssetModal_chooseFileWrapper__7ih8S {
+.uploadAssetModal_chooseFileWrapper__Ssxr2 {
   text-align: center;
   /* Center the contents */
   margin-bottom: 16px;
   /* Space above the drop box */
 }
 /* You might want to style the text that prompts users to drop files to cover the size of the whole box */
-.UploadAssetModal_dropFilePrompt__FMOxG {
+.uploadAssetModal_dropFilePrompt__JcXw7 {
   font-size: 16px;
   color: #fff;
   margin-bottom: 8px;
@@ -154,11 +154,11 @@
   cursor: pointer;
   /* Change cursor to pointer when hovering over the label */
 }
-.UploadAssetModal_error__URbtz .UploadAssetModal_MuiOutlinedInput-root__8AWsM {
+.uploadAssetModal_error__aGyCi .uploadAssetModal_MuiOutlinedInput-root__s5zyP {
   color: red;
   border-color: red;
 }
-.UploadAssetModal_error__URbtz .UploadAssetModal_MuiFormLabel-root__WAqs0 {
+.uploadAssetModal_error__aGyCi .uploadAssetModal_MuiFormLabel-root__m3wjD {
   color: red;
 }
 /*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
