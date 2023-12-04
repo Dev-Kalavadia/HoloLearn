@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button
 } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,6 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import styles from './manageAsset.module.css';
 import { useAuth } from '@/app/(auth)/AuthContext';
+import * as QRCode from 'qrcode';
 
 interface ManageAssetsProps {
     userEmail: string | null;
@@ -17,10 +18,7 @@ interface ManageAssetsProps {
 const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
     const [assets, setAssets] = useState<{ name: string, path: string, size: string }[]>([]);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
-
-
     const user = useAuth().user;
-
     const fetchAssets = async () => {
         if (!user?.email) {
             setSnackbar({ open: true, message: 'User email is required', severity: 'error' });
@@ -113,6 +111,31 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
         }
     };
 
+    const handleQRcodeDownload = async (
+        assetId: string,
+    ) => {
+        try {
+            // Generate QR code
+            const qrData = assetId; // Replace with your asset-specific data
+            const qrCodeDataURL = await QRCode.toDataURL(qrData);
+
+            // Create a temporary link to trigger download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = qrCodeDataURL;
+            downloadLink.download = `QRCode-${assetId}.png`; // Filename for the download
+
+            // Append to the DOM and trigger click
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        } catch (error) {
+            console.error('Error generating QR code: ', error);
+            setSnackbar({ open: true, message: 'Error generating QR code', severity: 'error' });
+        }
+    };
+
+
+
     return (
         <div
             style={{
@@ -129,6 +152,7 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
                                 <TableCell className={styles.tableCellHead} >Asset ID</TableCell>
                                 <TableCell className={styles.tableCellHead} >Asset Size</TableCell>
                                 <TableCell className={styles.tableCellHead} >File Type</TableCell>
+                                <TableCell className={styles.tableCellHead} align="right">QR Code</TableCell>
                                 <TableCell className={styles.tableCellHead} align="right">Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -144,6 +168,14 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
                                     <TableCell className={styles.tableCell} >{asset.path.split('.')[0].split('/asset-')[1]}</TableCell>
                                     <TableCell className={styles.tableCell} >{(parseInt(asset.size) / 1000000).toFixed(2)} MB</TableCell>
                                     <TableCell className={styles.tableCell} >{asset.path.split('.')[1]}</TableCell>
+                                    {/* add a button with left padding which says Get QR */}
+                                    <TableCell className={styles.tableCell} align="right">
+                                        <Button variant="contained" className={styles.button}
+                                            onClick={() => handleQRcodeDownload(asset.path.split('.')[0].split('/asset-')[1])}>
+                                            Get QR
+                                        </Button>
+                                    </TableCell>
+
                                     <TableCell className={styles.tableCell} align="right">
                                         <IconButton
                                             // pass tje asset name along with the file type  <TableCell className={styles.tableCell} >{asset.path.split('.')[1]}</TableCell>

@@ -5,12 +5,20 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import { useAuth } from '../AuthContext';
+import { GoogleLogin } from 'react-google-login';
+import { loadGapiInsideDOM } from "gapi-script";
 
 export default function SignIn() {
 
   useEffect(() => {
     document.title = 'Sign In - HoloLearn'; // Set the title dynamically
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      await loadGapiInsideDOM();
+    })();
+  });
 
   const { setUser, setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
 
@@ -39,7 +47,7 @@ export default function SignIn() {
       localStorage.setItem('token', response.data.token);
 
       window.location.href = '/dashboard';
-       
+
 
     } catch (error) {
 
@@ -61,6 +69,32 @@ export default function SignIn() {
     }
   };
 
+  const responseGoogle = async (response: any) => {
+    console.log(response);
+    try {
+      const res = await axios.post('http://localhost:4000/google-signin', {
+        tokenId: response.tokenId,
+      });
+
+      console.log(res.data);
+
+      setUser(res.data.user);
+
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      setIsAuthenticated(true); // Set authentication to true
+
+      setSnackbar({ open: true, message: 'User signed in successfully', severity: 'success' });
+      localStorage.setItem('token', res.data.token);
+
+      window.location.href = '/dashboard';
+
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+    }
+  }
+
+
+
   // Function to close the Snackbar
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
@@ -80,16 +114,23 @@ export default function SignIn() {
             <form>
               <div className="flex flex-wrap -mx-3">
                 <div className="w-full px-3">
-                  <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center">
-                    <svg className="w-4 h-4 fill-current text-white opacity-75 shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
-                    </svg>
-                    <span className="h-6 flex items-center border-r border-white border-opacity-25 mr-4" aria-hidden="true"></span>
-                    <span className="flex-auto pl-16 pr-8 -ml-16"
-                    >Sign in with Google</span>
-                  </button>
+                  <GoogleLogin
 
-                  {/* <GoogleSignInButton /> */}
+                    render={renderProps => (
+                      <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                        <svg className="w-4 h-4 fill-current text-white opacity-75 shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
+                        </svg>
+                        <span className="h-6 flex items-center border-r border-white border-opacity-25 mr-4" aria-hidden="true"></span>
+                        <span className="flex-auto pl-16 pr-8 -ml-16"
+                        >Sign in with Google</span>
+                      </button>
+                    )}
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    clientId="286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com"
+                    cookiePolicy={'single_host_origin'}
+                  />
 
                 </div>
               </div>

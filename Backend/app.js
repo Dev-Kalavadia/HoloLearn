@@ -7,6 +7,12 @@ const saltRounds = 10; // for bcrypt password hashing
 const path = require('path');
 const morgan = require('morgan');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
+
+const { OAuth2Client } = require('google-auth-library');
+const CLIENT_ID = '286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com';
+const client = new OAuth2Client(CLIENT_ID);
+const SECRET_KEY = process.env.JWT_SECRET || 'your-very-secret-key'; // Use an environment variable for the secret key
 
 const app = express();
 const port = 4000;
@@ -64,7 +70,7 @@ app.post("/signin", async (req, res) => {
     }
 
     // Here, you should create a real JWT token using a library like jsonwebtoken
-    const token = "fake-jwt-token-for-demo-purposes"; // Replace this with real JWT generation
+    // const token = "fake-jwt-token-for-demo-purposes"; // Replace this with real JWT generation
 
     const userResponse = {
       firstname: user.firstname,
@@ -72,6 +78,12 @@ app.post("/signin", async (req, res) => {
       email: user.email,
       assets: user.assets,
     };
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      SECRET_KEY,
+      { expiresIn: '24h' } // Token expires in 24 hours
+    );
 
     // Send the token to the client
     res.send({ token, user: userResponse });
@@ -99,9 +111,15 @@ app.post("/signup", async (req, res) => {
     await user.save();
 
     // Generate a JWT token - in a real app, you'd want to use a proper JWT library
-    const token = "123456789";
+    // const token = "123456789";
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      SECRET_KEY,
+      { expiresIn: '24h' } // Token expires in 24 hours
+    );
+
     // Send back the token
-    res.json({ token });
+    res.send({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
     if (err.code === 11000) {
       // Duplicate key error (likely duplicate email)
@@ -376,6 +394,99 @@ app.delete('/delete-user', async (req, res) => {
   }
 });
 
+app.post('/google-signin', async (req, res) => {
+  const { tokenId } = req.body;
+
+  try {
+    // Verify the Google token
+    const ticket = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    // Extract user information from the payload
+    const { email, name, picture } = payload;
+    const firstname = name.split(' ')[0];
+    const lastname = name.split(' ')[1] || '';
+
+    // Check if user exists in the database
+    let user = await UserModel.findOne({ email });
+
+    if (!user) {
+      // If user does not exist, create a new one
+      user = new UserModel({
+        firstname,
+        lastname,
+        email,
+        // You might want to handle passwords differently for Google-authenticated users
+      });
+
+      await user.save();
+    }
+
+    // Generate a JWT token
+    const token = "generate-your-jwt-token-here"; // Replace with your JWT generation logic
+
+    // Send the token and user information to the client
+    res.send({ token, user: { firstname, lastname, email, picture } });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error signing in with Google');
+  }
+});
+
+
+
+app.post('/google-signup', async (req, res) => {
+  const { tokenId } = req.body;
+
+  console.log('Received tokenId:', tokenId); // Log the tokenId for debugging
+
+  try {
+    // Verify the Google token
+    const ticket = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    // Extract user information from the payload
+    const { email, name, picture } = payload;
+    const firstname = name.split(' ')[0];
+    const lastname = name.split(' ')[1] || '';
+
+    // Check if user already exists
+    let user = await UserModel.findOne({ email });
+
+    if (user) {
+      return res.status(400).send('User already exists');
+    }
+
+    // Create a new user
+    user = new UserModel({
+      firstname,
+      lastname,
+      email,
+      // You might want to handle passwords and other fields differently for Google-authenticated users
+    });
+
+    await user.save();
+
+    // Generate a JWT token
+    const token = "generate-your-jwt-token-here"; // Replace with your JWT generation logic
+
+    // Send the token and user information to the client
+    res.send({ token, user: { firstname, lastname, email, picture } });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error signing up with Google');
+  }
+});
 
 
 app.listen(port, () => {

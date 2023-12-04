@@ -7,6 +7,7 @@ import Header from '@/components/ui/header'
 import Banner from '@/components/banner'
 import { AuthProvider, useAuth } from './(auth)/AuthContext'
 import { useEffect } from 'react'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,16 +30,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-900 text-gray-200 tracking-tight`}>
-        <div className="flex flex-col min-h-screen overflow-hidden">
-          <AuthProvider>
-            <Header />
-            {children}
-            <Banner />
-          </AuthProvider>
-        </div>
-      </body>
-    </html>
+    <GoogleOAuthProvider clientId="286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com">
+      <html lang="en">
+        <body className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-900 text-gray-200 tracking-tight`}>
+          <div className="flex flex-col min-h-screen overflow-hidden">
+            <AuthProvider>
+              <Header />
+              {children}
+              <Banner />
+            </AuthProvider>
+          </div>
+        </body>
+      </html>
+    </GoogleOAuthProvider>
   )
 }

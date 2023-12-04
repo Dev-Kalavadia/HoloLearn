@@ -10,7 +10,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import styles from './manageContent.module.css';
 import { useAuth } from '@/app/(auth)/AuthContext';
-import Preview from './dialogue';
+
 
 interface ManageContentsProps {
     userEmail: string | null;
@@ -19,42 +19,60 @@ interface ManageContentsProps {
 const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
     const [contents, setContents] = useState<{ name: string, path: string, size: string }[]>([]);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [currentPreviewContent, setCurrentPreviewContent] = useState<{ name: string; path: string; size: string; } | null>(null);
-    const [previewImage, setPreviewImage] = useState<{ url: string; fileType: string } | null>(null);
 
-
-    const handlePreview = (content: { name: string, path: string, size: string }) => {
-        console.log(content);
-        setCurrentPreviewContent(content);
-        setPreviewOpen(true);
-        
-    };
-
-    const fetchPreviewContent = async (contentName: string, fileType: string) => {
+    const fetchPreviewContent = async (content: { name: string, path: string, size: string }) => {
         try {
             const userEmail = encodeURIComponent(user?.email || '');
-            const response = await fetch(`http://localhost:4000/get-preview-content?email=${userEmail}&contentName=${contentName}`);
+            const response = await fetch(`http://localhost:4000/get-preview-content?email=${userEmail}&contentName=${content.name}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Determine the content type based on the file type (e.g., image or PDF)
-            const contentType = fileType === 'pdf' ? 'application/pdf' : 'image/*'; // Update as needed
+            const contentTypeMap = {
+                pdf: 'application/pdf',
+                png: 'image/png',
+                jpg: 'image/jpeg',
+                jpeg: 'image/jpeg',
+                gif: 'image/gif',
+                bmp: 'image/bmp',
+            };
 
-            // Create a Blob from the response data with the specified content type
-            const blob = await response.blob();
-            const blobWithType = new Blob([blob], { type: contentType });
+            console.log('Fetching preview content for:', content.name);
 
-            // Display the preview content (image or PDF) in a new window or modal
-            if (fileType === 'pdf') {
-                // For PDFs, you can open them in a new tab or window
-                const url = window.URL.createObjectURL(blobWithType);
-                window.open(url, '_blank'); // Opens in a new window or tab
-            } else {
-                // For images, you can open them in a modal dialog
-                const imageUrl = window.URL.createObjectURL(blobWithType);
-                setPreviewImage({ url: imageUrl, fileType: fileType });
+            type ContentType = keyof typeof contentTypeMap;
+            const getFileExtension = (filename: string): ContentType | undefined => {
+                const parts = filename.split('.');
+                if (parts.length > 1) {
+                    const ext = parts.pop();
+                    if (ext && ext in contentTypeMap) {
+                        return ext as ContentType;
+                    }
+                }
+            };
+            console.log('Determined file type:', getFileExtension(content.path));
+
+
+            const fileType = getFileExtension(content.path);
+
+            if (fileType && fileType in contentTypeMap) {
+                const contentType = contentTypeMap[fileType];
+
+                // Create a Blob from the response data with the specified content type
+                const blob = await response.blob();
+                const blobWithType = new Blob([blob], { type: contentType });
+                console.log('Blob created with type:', blobWithType.type);
+
+                // Display the preview content (image or PDF) in a new window or modal
+
+                if (fileType === 'pdf') {
+                    // For PDFs, you can open them in a new tab or window
+                    const url = window.URL.createObjectURL(blobWithType);
+                    window.open(url, '_blank'); // Opens in a new window or tab
+                } else {
+                    // For images, you can open them in a modal dialog
+                    const imageUrl = window.URL.createObjectURL(blobWithType);
+                    displayImage(imageUrl);
+                }
             }
         } catch (error) {
             const message = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -62,8 +80,13 @@ const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
             // Handle any error, such as displaying an error message to the user
             setSnackbar({ open: true, message, severity: 'error' });
         }
-    };
+    }
 
+    const displayImage = (imageUrl: string) => {
+        // Open the image in a new tab or window
+        console.log('Displaying image:', imageUrl);
+        window.open(imageUrl, '_blank'); // Opens in a new window or tab
+    };
 
 
     const user = useAuth().user;
@@ -190,21 +213,10 @@ const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
                                     <TableCell className={styles.tableCell} >{content.path.split('.')[1]}</TableCell>
                                     <TableCell className={styles.tableCell} align="right">
                                         {/* Icon button for preview of file which opens in a dialogue box wither images of pdfs */}
-                                        <IconButton onClick={() => handlePreview(content)} aria-label="preview">
+                                        <IconButton onClick={() => fetchPreviewContent(content)} className={styles.iconButtonPreview} aria-label="preview">
 
                                             <PreviewIcon />
                                         </IconButton>
-
-                                        {previewOpen && currentPreviewContent && (
-                                            <Preview
-                                                previewOpen={previewOpen}
-                                                setPreviewOpen={setPreviewOpen}
-                                                fetchPreviewContent={fetchPreviewContent}
-                                                content={currentPreviewContent
-                                                }
-                                            />
-                                        )}
-
 
                                         <IconButton
                                             // pass tje content name along with the file type  <TableCell className={styles.tableCell} >{content.path.split('.')[1]}</TableCell>

@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // You'll need to install axios with `npm install axios` or `yarn add axios`
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
-import Head from 'next/head';
 import { useAuth } from '../AuthContext';
-
-
+import { GoogleLogin } from 'react-google-login';
+import { loadGapiInsideDOM } from "gapi-script";
 
 export default function SignUp() {
   useEffect(() => {
@@ -20,8 +19,13 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
-  const { setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
+  const { setUser, setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
 
+  useEffect(() => {
+    (async () => {
+      await loadGapiInsideDOM();
+    })();
+  });
 
   // Function to handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -46,8 +50,6 @@ export default function SignUp() {
 
       window.location.href = '/signin';
 
-      // ...
-
     } catch (error) {
       // Handle error (e.g., show error message to the user)
       // if response status code is 400, it means the user already exists show card 
@@ -66,6 +68,41 @@ export default function SignUp() {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const responseGoogle = async (response: any) => {
+    console.log('Google response:', response);
+
+    if (response.error) {
+      console.error('Error from Google Sign In:', response.error);
+      setSnackbar({ open: true, message: `Google Sign In Error: ${response.error}`, severity: 'error' });
+      return;
+    }
+
+    if (!response.tokenId) {
+      console.error('Token ID is undefined');
+      setSnackbar({ open: true, message: 'Token ID is undefined. Cannot proceed with sign in.', severity: 'error' });
+      return;
+    }
+
+    try {
+      const res = await axios.post('http://localhost:4000/google-signup', {
+        tokenId: response.tokenId,
+      });
+
+      console.log('Backend response:', res.data);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      setIsAuthenticated(true);
+      setUser(res.data.user);
+
+      setSnackbar({ open: true, message: 'User signed up successfully', severity: 'success' });
+      window.location.href = '/dashboard';
+
+    } catch (error) {
+      console.error('Sign in failed:', error);
+      setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+    }
+  };
+
 
   return (
     <section className="relative">
@@ -82,13 +119,24 @@ export default function SignUp() {
             <form onSubmit={handleSubmit}>
               <div className="flex flex-wrap -mx-3">
                 <div className="w-full px-3">
-                  <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center">
-                    <svg className="w-4 h-4 fill-current text-white opacity-75 shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
-                    </svg>
-                    <span className="h-6 flex items-center border-r border-white border-opacity-25 mr-4" aria-hidden="true"></span>
-                    <span className="flex-auto pl-16 pr-8 -ml-16">Sign up with Google</span>
-                  </button>
+                  <GoogleLogin
+
+                    render={renderProps => (
+                      <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                        <svg className="w-4 h-4 fill-current text-white opacity-75 shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
+                        </svg>
+                        <span className="h-6 flex items-center border-r border-white border-opacity-25 mr-4" aria-hidden="true"></span>
+                        <span className="flex-auto pl-16 pr-8 -ml-16"
+                        >Sign up with Google</span>
+                      </button>
+                    )}
+
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    clientId="286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com"
+                    cookiePolicy={'single_host_origin'}
+                  />
                 </div>
               </div>
             </form>

@@ -74,10 +74,7 @@ export default function UploadContentModal() {
 
             if (response.ok) {
                 handleCloseModal();
-
-                window.location.href = '/manage-content';
-
-
+                window.location.href = '/dashboard';
                 setSnackbar({ open: true, message: 'Content uploaded successfully', severity: 'success' });
             } else {
                 const errorResponse = await response.text();

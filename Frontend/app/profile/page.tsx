@@ -26,6 +26,16 @@ const Profile: React.FC = () => {
         return <div className={styles.loading}>Loading...</div>;
     }
 
+    const { isAuthenticated, setIsAuthenticated } = useAuth();
+
+    useEffect(() => {
+        // Perform logout logic
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, [setIsAuthenticated]);
+
     const handleDeleteUser = async () => {
         if (!user?.email) {
             // Display an error message if the user's email is not available
@@ -52,6 +62,9 @@ const Profile: React.FC = () => {
             // Additional actions after successful deletion
             // e.g., redirecting the user, clearing local user data, etc.
             // ...
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setIsAuthenticated(false);
             window.location.href = '/';
 
         } catch (error) {
