@@ -15,10 +15,17 @@ export default function SignIn() {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      await loadGapiInsideDOM();
-    })();
-  });
+    if (typeof window !== "undefined") {
+      loadGapi();
+    }
+  }, []);
+
+  // Define the loadGapi function outside of the useEffect block
+  const loadGapi = async () => {
+    const gapiScript = await import('gapi-script');
+    gapiScript.loadGapiInsideDOM(); // Call the function
+  };
+
 
   const { setUser, setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
 
@@ -46,7 +53,9 @@ export default function SignIn() {
       setSnackbar({ open: true, message: 'User signed in successfully', severity: 'success' });
       localStorage.setItem('token', response.data.token);
 
-      window.location.href = '/dashboard';
+      if (typeof window !== "undefined") {
+        window.location.href = '/dashboard';
+      }
 
 
     } catch (error) {
@@ -86,7 +95,9 @@ export default function SignIn() {
       setSnackbar({ open: true, message: 'User signed in successfully', severity: 'success' });
       localStorage.setItem('token', res.data.token);
 
-      window.location.href = '/dashboard';
+      if (typeof window !== "undefined") {
+        window.location.href = '/dashboard';
+      }
 
     } catch (error) {
       setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });

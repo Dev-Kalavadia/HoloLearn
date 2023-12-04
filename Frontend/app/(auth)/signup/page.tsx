@@ -6,7 +6,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import { useAuth } from '../AuthContext';
 import { GoogleLogin } from 'react-google-login';
-import { loadGapiInsideDOM } from "gapi-script";
+// import { loadGapiInsideDOM } from "gapi-script";
+import dynamic from 'next/dynamic';
 
 export default function SignUp() {
   useEffect(() => {
@@ -22,10 +23,16 @@ export default function SignUp() {
   const { setUser, setIsAuthenticated } = useAuth(); // Initialize setIsAuthenticated with an initial value of false
 
   useEffect(() => {
-    (async () => {
-      await loadGapiInsideDOM();
-    })();
-  });
+    if (typeof window !== "undefined") {
+      loadGapi();
+    }
+  }, []);
+
+  // Define the loadGapi function outside of the useEffect block
+  const loadGapi = async () => {
+    const gapiScript = await import('gapi-script');
+    gapiScript.loadGapiInsideDOM(); // Call the function
+  };
 
   // Function to handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -48,7 +55,9 @@ export default function SignUp() {
       // success message to the user on the snackbar
       setSnackbar({ open: true, message: 'User signed up successfully', severity: 'success' });
 
-      window.location.href = '/signin';
+      if (typeof window !== "undefined") {
+        window.location.href = '/signin';
+      }
 
     } catch (error) {
       // Handle error (e.g., show error message to the user)
@@ -95,11 +104,13 @@ export default function SignUp() {
       setUser(res.data.user);
 
       setSnackbar({ open: true, message: 'User signed up successfully', severity: 'success' });
-      window.location.href = '/dashboard';
+      if (typeof window !== "undefined") {
+        window.location.href = '/dashboard';
+      }
 
     } catch (error) {
-      console.error('Sign in failed:', error);
-      setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+      console.error('Sign up failed:', error);
+      setSnackbar({ open: true, message: 'Sign up failed. Please try again.', severity: 'error' });
     }
   };
 

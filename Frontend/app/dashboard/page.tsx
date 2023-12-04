@@ -13,12 +13,28 @@ import ManageContents from '@/components/manageContent';
 import UploadContentModal from '@/components/uploadContentModal';
 
 export default function Dashboard() {
+    // localStorage  // Access localStorage in useEffect
+    const [activeTab, setActiveTab] = useState('manage-assets'); // Initialize with default value
 
     useEffect(() => {
-        document.title = 'Dashboard - HoloLearn'; // Set the title dynamically
+        document.title = 'Dashboard - HoloLearn';
+
+        // Check if window is defined (this means we're on the client side)
+        if (typeof window !== "undefined") {
+            const storedActiveTab = localStorage.getItem('activeTab');
+            if (storedActiveTab) {
+                setActiveTab(storedActiveTab);
+            }
+        }
     }, []);
 
-    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'manage-assets');
+    const handleTabChange = (tabName: string) => {
+        setActiveTab(tabName);
+        // Make sure window is defined before using localStorage
+        if (typeof window !== "undefined") {
+            localStorage.setItem('activeTab', tabName);
+        }
+    }
 
     const [qrValue, setQrValue] = useState(''); // State to store the value to encode in the QR code
     const qrRef = useRef<SVGSVGElement | null>(null);
@@ -48,14 +64,6 @@ export default function Dashboard() {
         setSnackbar({ ...snackbar, open: false });
     };
 
-    useEffect(() => {
-        // Update state based on localStorage when component mounts
-        const storedActiveTab = localStorage.getItem('activeTab');
-        if (storedActiveTab) {
-            setActiveTab(storedActiveTab);
-        }
-    }, []);
-
 
     return (
         <>
@@ -66,30 +74,20 @@ export default function Dashboard() {
                         <li
                             className={activeTab === 'manage-assets' ? styles.activeTab : ''}
                             onClick={() => {
-                                const newTab = 'manage-assets';
-                                setActiveTab(newTab);
-                                localStorage.setItem('activeTab', newTab);
+                                handleTabChange('manage-assets')
                             }}
                         >
                             Manage Assets
                         </li>
                         <li
                             className={activeTab === 'manage-content' ? styles.activeTab : ''}
-                            onClick={() => {
-                                const newTab = 'manage-content';
-                                setActiveTab(newTab);
-                                localStorage.setItem('activeTab', newTab);
-                            }}
+                            onClick={() => handleTabChange('manage-content')}
                         >
                             Manage Content
                         </li>
                         <li
                             className={activeTab === 'generate-qr' ? styles.activeTab : ''}
-                            onClick={() => {
-                                const newTab = 'generate-qr';
-                                setActiveTab(newTab);
-                                localStorage.setItem('activeTab', newTab);
-                            }}
+                            onClick={() => handleTabChange('generate-qr')}
                         >
                             Generate QR
                         </li>
@@ -162,7 +160,7 @@ export default function Dashboard() {
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
 
             <Snackbar
                 open={snackbar.open}
