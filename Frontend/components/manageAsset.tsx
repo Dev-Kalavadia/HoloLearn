@@ -27,7 +27,7 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
 
         try {
 
-            const response = await fetch(`http://localhost:4000/get-assets?email=${user.email}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-assets?email=${user.email}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch assets');
             }
@@ -58,7 +58,7 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
     const handleDownload = async (assetName: string, fileType: string) => {
         try {
             const userEmail = encodeURIComponent(user?.email || '');
-            const response = await fetch(`http://localhost:4000/get-asset?email=${userEmail}&assetName=${assetName}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-asset?email=${userEmail}&assetName=${assetName}`);
             if (!response.ok) {
                 throw new Error('Asset download failed');
             }
@@ -90,7 +90,7 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
 
     const handleDelete = async (assetName: string) => {
         try {
-            const response = await fetch('http://localhost:4000/delete-asset', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-asset`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

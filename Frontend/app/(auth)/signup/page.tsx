@@ -6,7 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import { useAuth } from '../AuthContext';
 import { GoogleLogin } from 'react-google-login';
-// import { loadGapiInsideDOM } from "gapi-script";
+import { loadGapiInsideDOM } from "gapi-script"; // Do not remove! Important for Google OAuth
 import dynamic from 'next/dynamic';
 
 export default function SignUp() {
@@ -40,7 +40,7 @@ export default function SignUp() {
     // Your code here
     try {
       // Send a POST request to the backend signup endpoint
-      const response = await axios.post('http://localhost:4000/signup', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
         firstname: firstName,
         lastname: lastName,
         email: email,
@@ -93,7 +93,7 @@ export default function SignUp() {
     }
 
     try {
-      const res = await axios.post('http://localhost:4000/google-signup', {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/google-signup`, {
         tokenId: response.tokenId,
       });
 
@@ -145,7 +145,7 @@ export default function SignUp() {
 
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
-                    clientId="286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com"
+                    clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
                     cookiePolicy={'single_host_origin'}
                   />
                 </div>

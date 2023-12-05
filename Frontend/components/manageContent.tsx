@@ -23,7 +23,7 @@ const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
     const fetchPreviewContent = async (content: { name: string, path: string, size: string }) => {
         try {
             const userEmail = encodeURIComponent(user?.email || '');
-            const response = await fetch(`http://localhost:4000/get-preview-content?email=${userEmail}&contentName=${content.name}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-preview-content?email=${userEmail}&contentName=${content.name}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -97,7 +97,7 @@ const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:4000/get-contents?email=${user.email}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-contents?email=${user.email}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch contents');
             }
@@ -127,7 +127,7 @@ const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
     const handleDownload = async (contentName: string, fileType: string) => {
         try {
             const userEmail = encodeURIComponent(user?.email || '');
-            const response = await fetch(`http://localhost:4000/get-content?email=${userEmail}&contentName=${contentName}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-content?email=${userEmail}&contentName=${contentName}`);
             if (!response.ok) {
                 throw new Error('content download failed');
             }
@@ -159,7 +159,7 @@ const ManageContents: React.FC<ManageContentsProps> = ({ userEmail }) => {
 
     const handleDelete = async (contentName: string) => {
         try {
-            const response = await fetch('http://localhost:4000/delete-content', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-content`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

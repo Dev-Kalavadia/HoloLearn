@@ -67,7 +67,7 @@ export default function UploadContentModal() {
         setUploadClicked(true);
 
         try {
-            const response = await fetch('http://localhost:4000/upload-content', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-content`, {
                 method: 'POST',
                 body: formData,
             });

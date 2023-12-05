@@ -16,7 +16,7 @@ export default function SignUp() {
         event.preventDefault(); // Prevent default form submission
 
         try {
-            const response = await axios.post('http://localhost:4000/signup', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,

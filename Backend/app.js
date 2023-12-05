@@ -15,7 +15,7 @@ const client = new OAuth2Client(CLIENT_ID);
 const SECRET_KEY = process.env.JWT_SECRET || 'your-very-secret-key'; // Use an environment variable for the secret key
 
 const app = express();
-const port = 4000;
+const port = 8080;
 
 app.use(express.json());
 app.use(cors());
@@ -309,8 +309,20 @@ app.delete('/delete-asset', async (req, res) => {
     }
 
     // Assuming the user's assets are stored in an array named 'assets'
-    user.assets = user.assets.filter(asset => asset.name !== assetName);
-    await user.save();
+    const asset = user.assets.find(a => a.name === assetName);
+    if (asset) {
+      // Delete the file from the filesystem
+      fs.unlink(path.join(__dirname, asset.path), (err) => {
+        if (err) {
+          console.error('Failed to delete file:', err);
+          return res.status(500).send('Failed to delete asset file');
+        }
+      });
+
+      // Remove the asset from the user's assets array
+      user.assets = user.assets.filter(a => a.name !== assetName);
+      await user.save();
+    }
 
     res.send({ message: 'Asset deleted successfully' });
   } catch (err) {
@@ -333,9 +345,20 @@ app.delete('/delete-content', async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    // Assuming the user's assets are stored in an array named 'assets'
-    user.contents = user.contents.filter(content => content.name !== contentName);
-    await user.save();
+    const content = user.contents.find(c => c.name === contentName);
+    if (content) {
+      // Delete the file from the filesystem
+      fs.unlink(path.join(__dirname, content.path), (err) => {
+        if (err) {
+          console.error('Failed to delete file:', err);
+          return res.status(500).send('Failed to delete content file');
+        }
+      });
+
+      // Remove the content from the user's contents array
+      user.contents = user.contents.filter(c => c.name !== contentName);
+      await user.save();
+    }
 
     res.send({ message: 'Content deleted successfully' });
   } catch (err) {
@@ -491,6 +514,8 @@ app.post('/google-signup', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+  console.log(`Press Ctrl+C to stop the server`);
+
 });
 
 

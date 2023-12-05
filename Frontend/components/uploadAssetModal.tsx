@@ -67,7 +67,7 @@ export default function UploadAssetModal() {
         setUploadClicked(true);
 
         try {
-            const response = await fetch('http://localhost:4000/upload-asset', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-asset`, {
                 method: 'POST',
                 body: formData,
             });

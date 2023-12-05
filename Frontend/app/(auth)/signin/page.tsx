@@ -6,7 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertColor } from '@mui/material/Alert';
 import { useAuth } from '../AuthContext';
 import { GoogleLogin } from 'react-google-login';
-import { loadGapiInsideDOM } from "gapi-script";
+import { loadGapiInsideDOM } from "gapi-script"; // Do not remove! Important for Google OAuth
 
 export default function SignIn() {
 
@@ -38,7 +38,7 @@ export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/signin', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/signin`, {
         email: email,
         password: password,
       });
@@ -73,15 +73,16 @@ export default function SignIn() {
             break;
         }
       } else {
-        setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+        setSnackbar({ open: true, message: '505 Sign in failed. Please try again.', severity: 'error' });
       }
     }
   };
 
   const responseGoogle = async (response: any) => {
     console.log(response);
+
     try {
-      const res = await axios.post('http://localhost:4000/google-signin', {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/google-signin`, {
         tokenId: response.tokenId,
       });
 
@@ -100,7 +101,7 @@ export default function SignIn() {
       }
 
     } catch (error) {
-      setSnackbar({ open: true, message: 'Sign in failed. Please try again.', severity: 'error' });
+      setSnackbar({ open: true, message: 'Google Sign in failed. Please try again.', severity: 'error' });
     }
   }
 
@@ -139,7 +140,7 @@ export default function SignIn() {
                     )}
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
-                    clientId="286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com"
+                    clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
                     cookiePolicy={'single_host_origin'}
                   />
 

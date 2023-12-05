@@ -44,7 +44,7 @@ const Profile: React.FC = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:4000/delete-user', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-user`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

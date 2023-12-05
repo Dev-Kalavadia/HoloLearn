@@ -4,7 +4,7 @@ import MobileMenu from './mobile-menu';
 import { useAuth } from '@/app/(auth)/AuthContext';
 import { useEffect, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import { loadGapiInsideDOM } from "gapi-script";
 export default function Header() {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
 
