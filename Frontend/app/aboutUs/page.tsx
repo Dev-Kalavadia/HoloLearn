@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { Container, Typography, Grid, Button } from '@material-ui/core';
-import styles from './aboutUs.module.css';
+import styles from './AboutUs.module.css';
 import Image from 'next/image'
 import FeatImage01 from '@/public/images/digitalLearning.jpg'
 import FeatImage02 from '@/public/images/interactiveLearning.jpg'
