@@ -1,0 +1,93 @@
+.topMargin {
+    padding-top: 80px;
+    /* Adjust based on your header size */
+}
+
+.heading {
+    color: #ffffff;
+    /* Vivid blue */
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    /* Space below heading */
+    font-weight: 700;
+    text-align: center;
+}
+
+.subheading {
+    color: #95a3ee;
+    /* Medium blue */
+    text-align: left;
+    margin-bottom: 15px;
+    padding: 30px;
+    /* Space below subheading */
+}
+
+/* For the first image-text pair, the image is on the right (default) */
+/* For the second image-text pair, the image is on the left */
+.imageLeft {
+    order: -1;
+}
+
+
+.textSide,
+.imageSide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textBody {
+    color: #ffffff;
+    /* Vivid blue */
+    text-align: left;
+    margin-bottom: 15px;
+    padding: 10px;
+    /* Space below text */
+}
+
+
+.textSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.imageSide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageRight {
+    order: 2;
+    /* For larger screens, push image to right */
+}
+
+.textRight {
+    order: 1;
+    /* For larger screens, pull text to left */
+}
+
+.image {
+    max-width: 60%;
+    height: auto;
+}
+
+.button {
+    background-color: #95a3ee;
+    /* Medium blue */
+    color: white;
+    padding-top: 20px;
+    /* Space above button */
+}
+
+/* Responsive adjustments */
+@media (max-width: 959px) {
+
+    .imageRight,
+    .textRight {
+        order: initial;
+        /* Reset order for smaller screens */
+    }
+}
+

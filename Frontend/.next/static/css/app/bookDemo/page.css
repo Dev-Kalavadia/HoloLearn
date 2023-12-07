@@ -1,0 +1,120 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[12].oneOf[7].use[3]!./app/bookDemo/BookDemo.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+/* BookDemo.module.css */
+.BookDemo_bookDemo__EBF42 {
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Ensure it covers the full viewport height */
+    padding: 70px 50px 30px 50px;
+    /* Add more vertical padding */
+    /* This will make it take up at least the full viewport height */
+}
+.BookDemo_cta-box__74QNk {
+    background-color: #5C6AC4;
+    /* Example CTA box color, adjust as needed */
+    width: 100%;
+    max-width: 600px;
+    /* Set a max-width for the box */
+    margin: 0 auto;
+    /* Center the box */
+    padding: 40px;
+    /* Add padding inside the box */
+    border-radius: 8px;
+    /* Optional: rounded corners for the box */
+    box-shadow: 0 15px 35px rgba(50, 50, 93, .1), 0 5px 15px rgba(0, 0, 0, .07);
+    /* Optional: add some shadow for depth */
+}
+.BookDemo_cta-content__z0mcM {
+    text-align: center;
+    /* Center the text */
+    margin-bottom: 40px;
+    /* Add more space below the text */
+}
+.BookDemo_cta-form__S__QT {
+    display: flex;
+    flex-direction: column;
+    /* Stack elements vertically */
+}
+/* Adjust your container's maximum width and center it */
+.BookDemo_max-w-6xl__romh1 {
+    max-width: 1280px;
+    /* Or whatever max width you prefer */
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    /* Add some padding on the sides */
+}
+/* CTA box */
+.BookDemo_bg-purple-600__h7C5a {
+    /* ... keep your existing styles ... */
+    padding: 60px 30px;
+    /* Increase padding for more space */
+}
+/* Update the form styles if needed */
+.BookDemo_form__22Ujb {
+    /* ... keep your existing styles ... */
+    max-width: 540px;
+    /* Adjust the width as needed */
+    margin: auto;
+}
+.BookDemo_btn-subscribe__5GHf9 {
+    padding: 15px;
+    /* Larger button padding */
+    width: 100%;
+    /* Full width button */
+    margin-top: 20px;
+    /* Add space above the button */
+}
+/* You might also want to add some media queries to adjust the layout on smaller screens */
+@media (max-width: 768px) {
+    .BookDemo_bookDemo__EBF42 {
+        padding: 60px 0;
+    }
+
+    .BookDemo_bg-purple-600__h7C5a {
+        padding: 40px 20px;
+    }
+}
+/* 
+.imagee {
+    max-width: 70%;
+    height: auto;
+} */
+.BookDemo_demoButton__RkZzO {
+    background-color: #95a3ee;
+    /* Medium blue */
+    color: white;
+    padding-top: 20px;
+    /* Space above button */
+    margin-top: 20px;
+    /* Add space above the button */
+    padding-bottom: 20px;
+    /* Space below button */
+    margin-bottom: 20px;
+    /* Add space below the button */
+    padding-left: 20px;
+    /* Space to the left and right of button */
+    padding-right: 20px;
+    /* Space to the left and right of button */
+    border-radius: 8px;
+    /* Optional: rounded corners for the button */
+    border: none;
+    /* Optional: no border around button */
+    font-size: 20px;
+    /* Increase font size */
+    font-weight: bold;
+    /* Bold font */
+    cursor: pointer;
+    /* Add a pointer on hover */
+    transition: all 0.3s ease-in-out;
+    /* Add transition effect */
+}
+
+
+

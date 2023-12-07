@@ -1,6 +1,10 @@
 import VideoThumb from '@/public/images/hero-image-01.jpg';
 import ModalVideo from '@/components/modal-video';
 import Image from 'next/image'; // Import the Image component from Next.js
+import { Link } from 'react-router-dom';
+
+// ...
+
 
 export default function Hero() {
   return (
@@ -30,8 +34,8 @@ export default function Hero() {
         <div className="flex flex-col items-center justify-center space-y-8 mt-8 pb-8">
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row sm:space-x-4" data-aos="fade-up" data-aos-delay="600">
-            <a className="btn bg-blue-600 hover:bg-blue-700 w-full sm:w-auto py-3 px-8 rounded-lg transition-all duration-300 mb-4 sm:mb-0" href="#0">Book A Demo</a>
-            <a className="btn bg-gray-700 hover:bg-gray-800 w-full sm:w-auto py-3 px-8 rounded-lg transition-all duration-300" href="#0">Learn more</a>
+            <a className="btn bg-blue-600 hover:bg-blue-700 w-full sm:w-auto py-3 px-8 rounded-lg transition-all duration-300 mb-4 sm:mb-0" href="/bookDemo">Book A Demo</a>
+            <a className="btn bg-gray-700 hover:bg-gray-800 w-full sm:w-auto py-3 px-8 rounded-lg transition-all duration-300" href="/aboutUs">Learn more</a>
           </div>
         </div>
 

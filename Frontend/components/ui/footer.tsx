@@ -69,14 +69,18 @@ export default function Footer() {
                 <h6 className="text-gray-200 font-medium mb-1 mt-8">Important Links</h6>
                 <ul>
                   <li className="mb-1">
-                    <Link href="/" className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out">Contact Us</Link>
+                    <Link href="/bookDemo" className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out">Contact Us</Link>
                   </li>
                   <li className="mb-1">
-                    <Link href="/" className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out">Book A Demo</Link>
+                    <Link href="/bookDemo" className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out">Book A Demo</Link>
+                  </li>
+                  <li className="mb-1">
+                    <Link href="/aboutUs" className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out">Learn More</Link>
                   </li>
                   <li className="mb-1">
                     <Link href="/" className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out">View Documentation</Link>
                   </li>
+                  
                 </ul>
               </div>
 
