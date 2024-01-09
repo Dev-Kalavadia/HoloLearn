@@ -36,7 +36,10 @@ export default function Header() {
           <div className="shrink-0 mr-4">
             {/* Logo */}
             <Link href="/" className="block" aria-label="Cruip">
-              <h1 className="text-purple-600 text-3xl font-bold">HoloLearn</h1>
+              <div className="flex items-center">
+                <img src="/images/H_logo.png" alt="HoloLearn" width="25" height="25" />
+                <h1 className="text-purple-600 text-3xl font-bold ml-0.5">oloLearn</h1>
+              </div>
             </Link>
           </div>
 

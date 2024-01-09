@@ -1,4 +1,4 @@
-import VideoThumb from '@/public/images/hero-image-01.jpg';
+import VideoThumb from '@/public/images/HoloLearnLogo1.png';
 import ModalVideo from '@/components/modal-video';
 import Image from 'next/image'; // Import the Image component from Next.js
 import { Link } from 'react-router-dom';
@@ -44,7 +44,7 @@ export default function Hero() {
           thumbWidth={1920}
           thumbHeight={1080}
           thumbAlt="Modal video thumbnail"
-          video="/videos/video.mp4"
+          video="/videos/video1.mp4"
           videoWidth={1920}
           videoHeight={1080}
         />
@@ -52,3 +52,6 @@ export default function Hero() {
     </section>
   );
 }
+
+
+

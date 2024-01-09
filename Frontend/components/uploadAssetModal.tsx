@@ -45,7 +45,7 @@ export default function UploadAssetModal() {
             setSnackbar({ open: true, message: 'Invalid file type. Please upload a valid file type.', severity: 'error' });
         }
 
-        if (file.size > 20000000) {
+        if (file.size > 30000000) {
             // Handle error: file too large
             setSnackbar({ open: true, message: 'File size too large. Please upload a file less than 20MB.', severity: 'error' });
         }

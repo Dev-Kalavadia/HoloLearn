@@ -18,6 +18,7 @@ interface ManageAssetsProps {
 const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
     const [assets, setAssets] = useState<{ name: string, path: string, size: string }[]>([]);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: '' });
+    const [selectedAsset, setSelectedAsset] = useState<{ name: string, path: string, size: string } | null>(null);
     const user = useAuth().user;
     const fetchAssets = async () => {
         if (!user?.email) {
@@ -135,7 +136,6 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
     };
 
 
-
     return (
         <div
             style={{
@@ -178,7 +178,6 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
 
                                     <TableCell className={styles.tableCell} align="right">
                                         <IconButton
-                                            // pass tje asset name along with the file type  <TableCell className={styles.tableCell} >{asset.path.split('.')[1]}</TableCell>
                                             onClick={() => handleDownload(asset.name
                                                 , asset.path.split('.')[1])}
                                             className={styles.iconButtonDownload} aria-label="download">
