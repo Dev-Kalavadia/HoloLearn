@@ -42,8 +42,8 @@ export default function Testimonials() {
                 <Image className="rounded-full" src={TestimonialImage02} width={450} height={450} alt="Testimonial 02" />
               </div>
               <div className="flex flex-col justify-between">
-                <blockquote className="text-lg pt-5 text-gray-400 grow">"HoloLearn aims to rethink and add a whole new dimension to the physical classroom environment, bringing traditional 2D educational content into a 3D virtual space"</blockquote>
-                <div className="text-gray-700 font-medium mt-[3-rem] pt-2 border-t border-gray-700 ml-[-150px]">
+                <blockquote className="text-lg pt-3 text-gray-400 grow">"HoloLearn aims to rethink and add a whole new dimension to the physical classroom environment, bringing traditional 2D educational content into a 3D virtual space"</blockquote>
+                <div className="text-gray-700 font-medium mt-[3-rem] pt-2 border-t border-gray-700 ml-[-120px]">
                   <cite className="text-gray-200 not-italic">Hassan Hamdani Hussain</cite> - <a className="text-purple-600 hover:text-gray-200 transition duration-150 ease-in-out" href="/">Co-founder - Game Developer</a>
                 </div>
               </div>
