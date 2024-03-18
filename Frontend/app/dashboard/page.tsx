@@ -11,10 +11,12 @@ import ManageAssets from '@/components/manageAsset';
 import { useAuth } from '@/app/(auth)/AuthContext';
 import ManageContents from '@/components/manageContent';
 import UploadContentModal from '@/components/uploadContentModal';
+import Chat from '@/components/chat';
+import './Chat.css';
 
 export default function Dashboard() {
     // localStorage  // Access localStorage in useEffect
-    const [activeTab, setActiveTab] = useState('manage-assets'); // Initialize with default value
+    const [activeTab, setActiveTab] = useState('holotutor'); // Initialize with default value
 
     useEffect(() => {
         document.title = 'Dashboard - HoloLearn';
@@ -72,6 +74,14 @@ export default function Dashboard() {
                 <div className={styles.sidebar}>
                     <ul className={styles.sidebarList}>
                         <li
+                            className={activeTab === 'holotutor' ? styles.activeTab : ''}
+                            onClick={() => {
+                                handleTabChange('holotutor')
+                            }}
+                        >
+                            HoloTutor
+                        </li>
+                        <li
                             className={activeTab === 'manage-assets' ? styles.activeTab : ''}
                             onClick={() => {
                                 handleTabChange('manage-assets')
@@ -96,6 +106,16 @@ export default function Dashboard() {
 
                 {/* Main content */}
                 <div className={styles.mainContent}>
+
+                    {user && activeTab === 'holotutor' && (
+                        <div>
+                            <h1 className={styles.heading}>HoloTutor</h1>
+                            <div className={styles.chatContainer}>
+                                <Chat />
+                            </div>
+                        </div>
+                    )}
+
                     {user && activeTab === 'manage-assets' && (
                         <div>
                             <h1 className={styles.heading}>Manage Assets</h1>

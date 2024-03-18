@@ -1,0 +1,35 @@
+.wrapper {
+  height: 60px;
+  background-color: #FF5252;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  width: 8%;
+  bottom: 7%;
+  right: 4%;
+}
+
+/* Styles for screens smaller than 1366px (typical 15 inch laptop) */
+@media (max-width: 1366px) {
+  .wrapper {
+    height: 50px;
+    font-size: 14px;
+    width: 10%;
+  }
+}
+
+/* Styles for screens smaller than 1280px (typical 13 inch laptop) */
+@media (max-width: 1280px) {
+  .wrapper {
+    height: 40px;
+    font-size: 12px;
+    width: 12%;
+  }
+}
+
+.wrapper:hover {
+  cursor: pointer;
+  background-color: #FF1744;
+}

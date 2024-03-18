@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "chatscope",
         "hololearn"
     ],
     "appService.defaultWebAppToDeploy": "undefined/subscriptions/e98fd820-e942-4570-86a9-3cd3d909c316/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/HoloLearn",

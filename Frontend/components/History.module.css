@@ -1,0 +1,12 @@
+.wrapper {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #1b1b1d;
+    text-align: center;
+}
+
+.wrapper:hover {
+    cursor: pointer;
+    background-color: #323236;
+}

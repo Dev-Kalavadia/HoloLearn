@@ -27,7 +27,6 @@ const ManageAssets: React.FC<ManageAssetsProps> = ({ userEmail }) => {
         }
 
         try {
-
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-assets?email=${user.email}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch assets');

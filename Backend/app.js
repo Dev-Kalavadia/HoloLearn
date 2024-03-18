@@ -8,8 +8,13 @@ const path = require('path');
 const morgan = require('morgan');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-
 const { OAuth2Client } = require('google-auth-library');
+const { OpenAI } = require('openai');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const OpenAI_Api = process.env.OPEN_AI_API_KEY || 'Mykey';
+
 const CLIENT_ID = '286133937381-1cjo5acc5pumi8afqh3vnig2o27tfcsr.apps.googleusercontent.com';
 const client = new OAuth2Client(CLIENT_ID);
 const SECRET_KEY = process.env.JWT_SECRET || 'your-very-secret-key'; // Use an environment variable for the secret key
@@ -21,9 +26,13 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('tiny'));
 
-const url = 'mongodb+srv://dk3936:MQJpx3fMocfaLvAV@hololearn-server.l5azrnv.mongodb.net/?retryWrites=true&w=majority';
+const openai = new OpenAI({
+  apiKey: OpenAI_Api
+});
 
-mongoose.connect(url)
+mongoose.connect(
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/holotutor', // Replace with your own database name
+)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Could not connect to MongoDB...', err));
 
@@ -511,6 +520,32 @@ app.post('/google-signup', async (req, res) => {
   }
 });
 
+
+//  propogate a response from client to OPEN-AI GPT 3.5 and return the response to the client
+app.post('/holotutor', async (req, res) => {
+  const { prompt } = req.body;
+
+  console.log('Received prompt:', prompt);
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: 'system', content: 'You are a helpful teaching assistant called HoloTutor' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.7
+    });
+
+    const replies = response.choices.map(choice => choice.message.content).join("\n");
+
+    res.send({ response: replies });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error sending prompt to GPT-3.5');
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

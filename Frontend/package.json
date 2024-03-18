@@ -1,6 +1,6 @@
 {
-  "name": "holoLearn",
-  "version": "0.1.0",
+  "name": "HoloLearn",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^1.10.1",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.14",

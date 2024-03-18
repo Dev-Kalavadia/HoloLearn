@@ -1,0 +1,65 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  /* Adjusted to make it responsive */
+  height: 63px;
+  border-radius: 10px;
+  background-color: #323236;
+  bottom: 7%;
+  position: absolute;
+  width: 73%;
+  outline: none;
+}
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+  .wrapper {
+    width: 80%;
+    /* Increase width on smaller screens */
+    grid-template-columns: 1fr 100px;
+    /* Adjust button width */
+  }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+  .wrapper {
+    width: 90%;
+    /* Further increase width on very small screens */
+    grid-template-columns: 1fr 80px;
+    /* Further adjust button width */
+    height: 50px;
+    /* Optionally adjust height for smaller screens */
+  }
+}
+
+.text {
+  /* existing styles */
+  border: none;
+  outline: none;
+  background: none;
+  padding: 20px;
+  color: white;
+  font-size: 16px;
+  /* add this to remove the blue outline */
+  box-shadow: none;
+}
+
+.text:focus {
+  outline: none;
+  /* if the box-shadow none isn't enough, add this too */
+  box-shadow: none;
+}
+
+.btn {
+  border: none;
+  border-radius: 0 10px 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: rgb(93 93 255 / var(--tw-bg-opacity));
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: rgb(75 74 207 / var(--tw-bg-opacity));
+}

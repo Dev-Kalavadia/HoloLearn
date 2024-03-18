@@ -1,0 +1,65 @@
+.App {
+    display: grid;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* For medium screens (tablets, large phones) */
+@media (max-width: 768px) {
+    .App {
+        /* grid-template-columns: 1fr; */
+        /* Single column layout */
+        gap: 10px;
+        /* Adjust gap if needed */
+        padding: 10px;
+        /* Reduce padding */
+    }
+}
+
+/* For small screens (phones) */
+@media (max-width: 480px) {
+    .App {
+        /* grid-template-columns: 1fr; */
+        /* Keep single column layout */
+        padding: 5px;
+        /* Further reduce padding for small screens */
+        max-width: 100%;
+        /* Allow full width use on small screens */
+    }
+}
+
+.Column {
+    color: white;
+    /* Adjusted to be center allgined */
+    text-align: center;
+    overflow: auto;
+
+}
+
+.Title {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    color: black;
+    background-color: rgb(218, 255, 170);
+    text-align: center;
+}
+
+.h3 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.Content {
+    /* Calculate the max-height based on the viewport height minus any other elements' height and margin/padding */
+    max-height: 70vh;
+    overflow-y: auto;
+    max-width: 95%;
+    padding-bottom: 50px;
+    scroll-behavior: smooth;
+    /* Enables scrolling for this specific container */
+}
+
