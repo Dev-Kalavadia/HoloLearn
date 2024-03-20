@@ -12,7 +12,7 @@ import { useAuth } from '@/app/(auth)/AuthContext';
 import ManageContents from '@/components/manageContent';
 import UploadContentModal from '@/components/uploadContentModal';
 import Chat from '@/components/chat';
-import './Chat.css';
+import './chat.css';
 
 export default function Dashboard() {
     // localStorage  // Access localStorage in useEffect
